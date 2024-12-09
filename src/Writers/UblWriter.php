@@ -761,7 +761,10 @@ class UblWriter extends AbstractWriter {
 
         // Tax category
         if ($atDocumentLevel) {
-            $this->addVatNode($xml, 'cac:TaxCategory', $item->getVatCategory(), $item->getVatRate());
+            if($this->getVatRate() != null)
+                $this->addVatNode($xml, 'cac:TaxCategory', $item->getVatCategory(), $item->getVatRate());
+            else
+                $this->addVatNode($xml, 'cac:TaxCategory', "O", $item->getVatRate());
         }
     }
 
