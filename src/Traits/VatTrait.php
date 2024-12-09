@@ -2,7 +2,7 @@
 namespace Einvoicing\Traits;
 
 trait VatTrait {
-    protected $vatCategory = "S"; // TODO: add constants
+    protected $vatCategory = "0"; // TODO: add constants
     protected $vatRate = null;
     protected $vatExemptionReasonCode = null;
     protected $vatExemptionReason = null;
