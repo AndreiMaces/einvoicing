@@ -798,7 +798,10 @@ class UblWriter extends AbstractWriter {
                 $this->addVatNode(
                     $vatBreakdownNode,
                     'cac:TaxCategory',
-                    "O"
+                    "O",
+                    $item->rate,
+                    $item->exemptionReasonCode,
+                    $item->exemptionReason
                 );
             }
 
@@ -973,7 +976,7 @@ class UblWriter extends AbstractWriter {
         if($line->getVatRate() != null) {
             $this->addVatNode($itemNode, 'cac:ClassifiedTaxCategory', $line->getVatCategory(), $line->getVatRate());
         } else {
-            $this->addVatNode($itemNode, 'cac:ClassifiedTaxCategory', "O");
+            $this->addVatNode($itemNode, 'cac:ClassifiedTaxCategory', "O", $line->getVatRate());
         }
 
         // BG-32: Item attributes
