@@ -785,14 +785,23 @@ class UblWriter extends AbstractWriter {
             $vatBreakdownNode = $xml->add('cac:TaxSubtotal');
             $this->addAmountNode($vatBreakdownNode, 'cbc:TaxableAmount', $item->taxableAmount, $totals->currency);
             $this->addAmountNode($vatBreakdownNode, 'cbc:TaxAmount', $item->taxAmount, $totals->currency);
-            $this->addVatNode(
-                $vatBreakdownNode,
-                'cac:TaxCategory',
-                $item->category,
-                $item->rate,
-                $item->exemptionReasonCode,
-                $item->exemptionReason
-            );
+            if($item->rate != null) {
+                $this->addVatNode(
+                    $vatBreakdownNode,
+                    'cac:TaxCategory',
+                    $item->category,
+                    $item->rate,
+                    $item->exemptionReasonCode,
+                    $item->exemptionReason
+                );
+            } else {
+                $this->addVatNode(
+                    $vatBreakdownNode,
+                    'cac:TaxCategory',
+                    "O"
+                );
+            }
+
         }
 
         // Add tax amount in VAT accounting currency (if any)
@@ -961,7 +970,11 @@ class UblWriter extends AbstractWriter {
         }
 
         // VAT node
-        $this->addVatNode($itemNode, 'cac:ClassifiedTaxCategory', $line->getVatCategory(), $line->getVatRate());
+        if($line->getVatRate() != null) {
+            $this->addVatNode($itemNode, 'cac:ClassifiedTaxCategory', $line->getVatCategory(), $line->getVatRate());
+        } else {
+            $this->addVatNode($itemNode, 'cac:ClassifiedTaxCategory', "O");
+        }
 
         // BG-32: Item attributes
         foreach ($line->getAttributes() as $attribute) {
